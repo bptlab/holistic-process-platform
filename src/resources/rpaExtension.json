@@ -1,0 +1,35 @@
+{
+    "name": "RPA",
+    "uri": "http://some-company/schema/bpmn/rpa",
+    "prefix": "rpa",
+    "xml": {
+        "tagAlias": "lowerCase"
+    },
+    "types": [
+        {
+            "name": "RPAConfiguration",
+            "superClass": [
+                "bpmn:Task"
+            ],
+            "properties": [
+                {
+                    "name": "library",
+                    "isAttr": true,
+                    "type": "String"
+                },
+                {
+                    "name": "keyword",
+                    "isAttr": true,
+                    "type": "String"
+                },
+                {
+                    "name": "comments",
+                    "isMany": true,
+                    "type": "Comment"
+                }
+            ]
+        }
+    ],
+    "emumerations": [],
+    "associations": []
+}
