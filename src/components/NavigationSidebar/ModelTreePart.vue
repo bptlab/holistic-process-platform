@@ -1,5 +1,5 @@
 <template>
-  <li @click="$emit('change-level', parentId)">
+  <li @click="$emit('change-level', parentId)" class="cursor-pointer">
     {{ currentLayerLevel }} - {{ currentLayerName }}
   </li>
   <ul v-if="layersToShow.length > 0" class="list-inside pl-4">
@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { ProcessLayer, ProcessLevel } from "../interfaces/ProcessLayer";
+import { ProcessLayer, ProcessLevel } from "../../interfaces/ProcessLayer";
 export default defineComponent({
   name: "model-tree",
   emits: ["change-level"],

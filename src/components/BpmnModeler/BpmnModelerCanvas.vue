@@ -13,13 +13,13 @@ import BpmnModeler from "bpmn-js/lib/modeler";
 //   BpmnPropertiesPanelModule,
 //   BpmnPropertiesProviderModule,
 // } from "bpmn-js-properties-panel";
-import rpaExtension from "../resources/rpaExtension.json";
+import rpaExtension from "../../resources/rpaExtension.json";
 
 import { markRaw } from "vue";
 import {
   ModelerEvent,
   ModelerSelectionChange,
-} from "../interfaces/ModelerEvents";
+} from "../../interfaces/ModelerEvents";
 
 export default defineComponent({
   name: "vue-bpmn",

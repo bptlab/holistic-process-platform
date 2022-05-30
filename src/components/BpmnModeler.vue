@@ -100,8 +100,8 @@ export default defineComponent({
 
 <script setup lang="ts">
 import { defineComponent } from "vue";
-import BpmnModelerCanvas from "./BpmnModelerCanvas.vue";
-import BpmnModelerPropertiesPanel from "./BpmnModelerPropertiesPanel.vue";
+import BpmnModelerCanvas from "./BpmnModeler/BpmnModelerCanvas.vue";
+import BpmnModelerPropertiesPanel from "./BpmnModeler/BpmnModelerPropertiesPanel.vue";
 import {
   ModelerElement,
   ModelerEvent,

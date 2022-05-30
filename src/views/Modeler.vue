@@ -5,7 +5,7 @@
   <hr />
   <div class="grid grid-cols-7 min-h-screen">
     <div class="col-span-1 shadow-lg p-2">
-      <ModelTree @change-level="navigateLevel" />
+      <NavigationSidebar @change-level="navigateLevel"></NavigationSidebar>
     </div>
     <div class="col-span-6 p-2">
       <ModelBreadcrumb
@@ -87,4 +87,5 @@ import {
   ProcessLayer,
 } from "../interfaces/ProcessLayer";
 import processStore from "../store/processLayerStore";
+import NavigationSidebar from "../components/NavigationSidebar.vue";
 </script>

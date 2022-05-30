@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.o-btn {
+  @apply bg-lime-800;
+}
