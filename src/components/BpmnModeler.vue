@@ -2,7 +2,7 @@
   <div class="grid grid-cols-5">
     <BpmnModelerCanvas
       :diagram="diagramXML"
-      :layer="currentLayer"
+      :layer="currentLayerId"
       @modeler-shown="modelerLoaded"
       @modeler-selection-changed="selectionChanged"
       @modeler-element-changed="elementChanged"
@@ -14,6 +14,7 @@
       v-if="modelerShown"
       :modeler="modeler"
       :element="element"
+      :isTaskLevel="isTaskLevel"
     ></BpmnModelerPropertiesPanel>
   </div>
 </template>
@@ -75,12 +76,21 @@ export default defineComponent({
     },
   },
   computed: {
-    currentLayer(): string {
+    currentLayerId(): string {
       return this.processLayerStore.activeLayer;
+    },
+    currentLayerLevel(): ProcessLevel | undefined {
+      return processStore.getActiveLayer()?.level;
+    },
+    isTaskLevel(): boolean {
+      if (!this.currentLayerLevel) {
+        return false;
+      }
+      return this.currentLayerLevel === ProcessLevel.Task;
     },
   },
   watch: {
-    currentLayer: function (val) {
+    currentLayerId: function (val) {
       // If the current layer changed, pass diagram xml to modeler canvas child.
       this.setNewDiagramXML();
     },
@@ -99,4 +109,5 @@ import {
 } from "../interfaces/ModelerEvents";
 import processStore from "../store/processLayerStore";
 import defaultDiagram from "../resources/defaultDiagram";
+import { ProcessLevel } from "../interfaces/ProcessLayer";
 </script>

@@ -1,8 +1,8 @@
 <template>
   <li @click="$emit('change-level', parentId)">
-    {{ currentLayerName }}
+    {{ currentLayerLevel }} - {{ currentLayerName }}
   </li>
-  <ul v-if="layersToShow.length > 0" class="list-disc list-inside pl-4">
+  <ul v-if="layersToShow.length > 0" class="list-inside pl-4">
     <ModelTreePart
       v-for="layer in layersToShow"
       :processLayers="processLayers"
@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { ProcessLayer } from "../interfaces/ProcessLayer";
+import { ProcessLayer, ProcessLevel } from "../interfaces/ProcessLayer";
 export default defineComponent({
   name: "model-tree",
   emits: ["change-level"],
@@ -32,17 +32,29 @@ export default defineComponent({
         (layer) => layer.parent === this.parentId
       );
     },
-    currentLayerName(): string | undefined {
+    currentLayer(): ProcessLayer | undefined {
       const activeLayer = this.processLayers.find(
         (layer) => layer.id === this.parentId
       );
       if (!activeLayer) {
+        return;
+      }
+      return activeLayer;
+    },
+    currentLayerName(): string {
+      if (!this.currentLayer) {
         return "";
       }
-      if (activeLayer.name) {
-        return activeLayer.name;
+      if (this.currentLayer.name) {
+        return this.currentLayer.name;
       }
-      return activeLayer.id;
+      return this.currentLayer.id;
+    },
+    currentLayerLevel(): string {
+      if (!this.currentLayer) {
+        return "";
+      }
+      return this.currentLayer.level.toString();
     },
   },
 });

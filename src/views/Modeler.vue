@@ -44,6 +44,7 @@ export default defineComponent({
         const newLayer: ProcessLayer = {
           id: subprocessId,
           parent: processStore.getActiveLayer().id,
+          level: processStore.getActiveLayer().level + 1,
         };
         if (e.element.businessObject.name) {
           newLayer.name = e.element.businessObject.name;

@@ -1,7 +1,7 @@
 <template>
   <div class="text-lg text-center">Process Layers</div>
   <hr />
-  <ul class="list-disc list-inside text-left mt-2">
+  <ul class="list-inside text-left mt-2">
     <ModelTreePart
       :processLayers="processLayerStore.processLayers"
       :parentId="firstLayerId"

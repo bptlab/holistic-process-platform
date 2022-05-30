@@ -13,13 +13,13 @@
       placeholder="Label"
       @input="updateLabel"
     />
-    <div v-if="element.businessObject.$type === 'bpmn:Task'">
+    <div v-if="element.businessObject.$type === 'bpmn:Task' && isTaskLevel">
       <o-field label="Library">
         <o-select
           placeholder="Select a library"
           @input="updateProperty($event, 'library')"
         >
-          <option value="Excel" :selected="">Excel</option>
+          <option value="Excel">Excel</option>
           <option value="Word">Word</option>
           <option value="FireFox">FireFox</option>
         </o-select>
@@ -54,6 +54,10 @@ export default defineComponent({
     element: {
       type: Object as PropType<ModelerElement>,
       required: false,
+    },
+    isTaskLevel: {
+      type: Boolean,
+      required: true,
     },
   },
   methods: {
