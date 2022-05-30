@@ -1,14 +1,13 @@
+import { BaseProcess } from "./BaseProcess";
+
 export enum ProcessLevel {
   Process = 1,
   Activity,
   Task,
 }
 
-export interface ProcessLayer {
-  id: string;
+export interface ProcessLayer extends BaseProcess {
   parent: string | null;
-  name: string;
-  diagram?: string;
   level: ProcessLevel;
 }
 
