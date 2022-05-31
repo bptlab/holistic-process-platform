@@ -33,6 +33,14 @@ const store = {
     return this.state.rpaFlows.some((flow) => flow.id === flowId);
   },
 
+  updateDiagramOfFlow(flowId: string, diagramXML: string): void {
+    const flow = this.getFlow(flowId);
+    if (!flow) {
+      return;
+    }
+    flow.diagram = diagramXML;
+  },
+
   initialize(dump?: rpaFlowStoreState): void {
     this.clearStore();
     if (dump) {

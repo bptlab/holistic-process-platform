@@ -7,13 +7,11 @@ import {
 
 export interface processLayerStoreState {
   processLayers: ProcessLayer[];
-  activeLayer: string;
 }
 
 const store = {
   state: reactive({
     processLayers: [] as ProcessLayer[],
-    activeLayer: "",
   }) as processLayerStoreState,
 
   addBusinessProcess(name?: string) {
@@ -22,7 +20,6 @@ const store = {
       newBusinessProcess.name = name;
     }
     this.addLayer(newBusinessProcess);
-    this.setActiveLayer(newBusinessProcess.id);
   },
 
   addLayer(newLayer: ProcessLayer): void {
@@ -38,17 +35,6 @@ const store = {
 
   hasLayer(layerId: string): boolean {
     return this.state.processLayers.some((layer) => layer.id === layerId);
-  },
-
-  setActiveLayer(layerId: string): void {
-    if (!this.hasLayer(layerId)) {
-      throw new Error("There exists no layer with this ID.");
-    }
-    this.state.activeLayer = layerId;
-  },
-
-  getActiveLayer(): ProcessLayer | undefined {
-    return this.getLayer(this.state.activeLayer);
   },
 
   getBusinessProcesses(): ProcessLayer[] {
@@ -72,20 +58,20 @@ const store = {
     return processLayers;
   },
 
-  updateActiveDiagram(diagramXML: string): void {
-    const activeLayer = this.getActiveLayer();
-    if (!activeLayer) {
+  updateDiagramOfLayer(layerId: string, diagramXML: string): void {
+    const layer = this.getLayer(layerId);
+    if (!layer) {
       return;
     }
-    activeLayer.diagram = diagramXML;
+    layer.diagram = diagramXML;
   },
 
-  updateActiveLayerName(name: string): void {
-    const activeLayer = this.getActiveLayer();
-    if (!activeLayer) {
+  updateLayerName(layerId: string, name: string): void {
+    const layer = this.getLayer(layerId);
+    if (!layer) {
       return;
     }
-    activeLayer.name = name;
+    layer.name = name;
   },
 
   initialize(dump?: processLayerStoreState): void {
@@ -107,7 +93,6 @@ const store = {
 
   load(dump: processLayerStoreState): void {
     this.state.processLayers = dump.processLayers;
-    this.state.activeLayer = dump.activeLayer;
   },
 };
 

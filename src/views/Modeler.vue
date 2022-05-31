@@ -8,6 +8,7 @@
       <NavigationSidebar
         @change-layer="navigateLayer"
         @new-process="addNewBusinessProcess"
+        @change-flow="navigateRpaFlow"
         @new-flow="addNewRpaFlow"
       ></NavigationSidebar>
     </div>
@@ -18,9 +19,13 @@
       ></ModelBreadcrumb>
 
       <hr />
-      <BpmnModeler @modeler-doubleclick="openSubLayer"></BpmnModeler>
+      <BpmnModeler
+        :processType="processType"
+        :activeProcessId="activeProcessId"
+        @modeler-doubleclick="openSubLayer"
+      ></BpmnModeler>
       <hr />
-      <ModelData></ModelData>
+      <!-- <ModelData></ModelData> -->
     </div>
   </div>
 </template>
@@ -33,11 +38,14 @@ export default defineComponent({
       processLayerStore: processStore.state,
       rpaFlowStore: rpaFlowStore.state,
       levels: ["Base"],
+      processType: ProcessType.Business,
+      activeProcessId: "",
     };
   },
   mounted() {
     // processStore.initialize(exampleProcessLandscape);
     processStore.initialize();
+    this.activeProcessId = processStore.getBusinessProcesses()[0].id;
   },
   methods: {
     openSubLayer(e: ModelerEvent): void {
@@ -47,7 +55,7 @@ export default defineComponent({
       const subprocessId = e.element.businessObject.id;
 
       if (!processStore.hasLayer(subprocessId)) {
-        const currentLayer = processStore.getActiveLayer();
+        const currentLayer = processStore.getLayer(this.activeProcessId);
         if (!currentLayer) {
           return;
         }
@@ -66,14 +74,20 @@ export default defineComponent({
     },
     navigateLayer(layer: string) {
       // this.currentLevel = level;
-      console.log(`Asked to change layer to ${layer}`);
-      processStore.setActiveLayer(layer);
+      console.log(`Asked to change to business process layer ${layer}`);
+      this.processType = ProcessType.Business;
+      this.activeProcessId = layer;
     },
     addNewBusinessProcess() {
       processStore.addBusinessProcess();
     },
     addNewRpaFlow() {
       rpaFlowStore.addNewFlow();
+    },
+    navigateRpaFlow(flowId: string) {
+      console.log(`Asked to change to RPA flow ${flowId}`);
+      this.processType = ProcessType.RPA;
+      this.activeProcessId = flowId;
     },
   },
 });
@@ -83,7 +97,6 @@ export default defineComponent({
 import { defineComponent, PropType } from "vue";
 import BpmnModeler from "../components/BpmnModeler.vue";
 import ModelBreadcrumb from "../components/ModelBreadcrumb.vue";
-import ModelTree from "../components/ModelTree.vue";
 import ModelData from "../components/ModelData.vue";
 import exampleProcessLandscape from "../resources/exampleProcessLandscape.json";
 import {
@@ -91,11 +104,9 @@ import {
   ModelerEvent,
   ModelerSelectionChange,
 } from "../interfaces/ModelerEvents";
-import {
-  generateBaseProcessLayer,
-  ProcessLayer,
-} from "../interfaces/ProcessLayer";
+import { ProcessLayer } from "../interfaces/ProcessLayer";
 import processStore from "../store/processLayerStore";
 import rpaFlowStore from "../store/rpaFlowStore";
 import NavigationSidebar from "../components/NavigationSidebar.vue";
+import { ProcessType } from "../interfaces/BaseProcess";
 </script>

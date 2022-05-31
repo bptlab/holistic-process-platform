@@ -3,3 +3,8 @@ export interface BaseProcess {
   name: string;
   diagram?: string;
 }
+
+export enum ProcessType {
+  Business,
+  RPA,
+}

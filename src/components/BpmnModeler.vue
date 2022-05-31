@@ -2,7 +2,7 @@
   <div class="grid grid-cols-5">
     <BpmnModelerCanvas
       :diagram="diagramXML"
-      :layer="currentLayerId"
+      :layer="activeProcessId"
       @modeler-shown="modelerLoaded"
       @modeler-selection-changed="selectionChanged"
       @modeler-element-changed="elementChanged"
@@ -23,6 +23,16 @@
 export default defineComponent({
   name: "modeler",
   emits: ["modeler-doubleclick"],
+  props: {
+    processType: {
+      type: Number as PropType<ProcessType>,
+      required: true,
+    },
+    activeProcessId: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       modelerShown: false,
@@ -30,6 +40,7 @@ export default defineComponent({
       selectedElements: [] as ModelerElement[],
       element: {} as ModelerElement,
       processLayerStore: processStore.state,
+      rpaFlowStore: rpaFlowStore.state,
       diagramXML: defaultDiagram as string,
     };
   },
@@ -61,12 +72,21 @@ export default defineComponent({
 
     saveDiagram: async function () {
       const diagramXML = await this.modeler.saveXML();
-      processStore.updateActiveDiagram(diagramXML);
+      if (this.processType === ProcessType.Business) {
+        processStore.updateDiagramOfLayer(this.activeProcessId, diagramXML);
+      } else {
+        rpaFlowStore.updateDiagramOfFlow(this.activeProcessId, diagramXML);
+      }
       // console.log(processStore.dump());
     },
 
     setNewDiagramXML(): void {
-      const currentLayer = processStore.getActiveLayer();
+      let currentLayer;
+      if (this.processType === ProcessType.Business) {
+        currentLayer = processStore.getLayer(this.activeProcessId);
+      } else {
+        currentLayer = rpaFlowStore.getFlow(this.activeProcessId);
+      }
       if (currentLayer && currentLayer.diagram) {
         this.diagramXML = currentLayer.diagram.xml;
       } else {
@@ -76,21 +96,19 @@ export default defineComponent({
     },
   },
   computed: {
-    currentLayerId(): string {
-      return this.processLayerStore.activeLayer;
-    },
-    currentLayerLevel(): ProcessLevel | undefined {
-      return processStore.getActiveLayer()?.level;
-    },
     isTaskLevel(): boolean {
-      if (!this.currentLayerLevel) {
+      if (this.processType === ProcessType.RPA) {
+        return true;
+      }
+      const currentLayer = processStore.getLayer(this.activeProcessId)?.level;
+      if (!currentLayer) {
         return false;
       }
-      return this.currentLayerLevel === ProcessLevel.Task;
+      return currentLayer === ProcessLevel.Task;
     },
   },
   watch: {
-    currentLayerId: function (val) {
+    activeProcessId: function (val) {
       // If the current layer changed, pass diagram xml to modeler canvas child.
       this.setNewDiagramXML();
     },
@@ -99,7 +117,7 @@ export default defineComponent({
 </script>
 
 <script setup lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import BpmnModelerCanvas from "./BpmnModeler/BpmnModelerCanvas.vue";
 import BpmnModelerPropertiesPanel from "./BpmnModeler/BpmnModelerPropertiesPanel.vue";
 import {
@@ -108,6 +126,8 @@ import {
   ModelerSelectionChange,
 } from "../interfaces/ModelerEvents";
 import processStore from "../store/processLayerStore";
+import rpaFlowStore from "../store/rpaFlowStore";
 import defaultDiagram from "../resources/defaultDiagram";
 import { ProcessLevel } from "../interfaces/ProcessLayer";
+import { ProcessType } from "../interfaces/BaseProcess";
 </script>
