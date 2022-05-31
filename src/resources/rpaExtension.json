@@ -26,6 +26,11 @@
                     "name": "comments",
                     "isMany": true,
                     "type": "Comment"
+                },
+                {
+                    "name": "flow-link",
+                    "isMany": true,
+                    "type": "String"
                 }
             ]
         }

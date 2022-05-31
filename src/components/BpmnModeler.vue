@@ -14,7 +14,8 @@
       v-if="modelerShown"
       :modeler="modeler"
       :element="element"
-      :isTaskLevel="isTaskLevel"
+      :processLevel="currentProcessLevel"
+      :rpaFlows="rpaFlows"
     ></BpmnModelerPropertiesPanel>
   </div>
 </template>
@@ -96,15 +97,18 @@ export default defineComponent({
     },
   },
   computed: {
-    isTaskLevel(): boolean {
+    currentProcessLevel(): ProcessLevel {
       if (this.processType === ProcessType.RPA) {
-        return true;
+        return ProcessLevel.Task;
       }
-      const currentLayer = processStore.getLayer(this.activeProcessId)?.level;
-      if (!currentLayer) {
-        return false;
+      const currentLevel = processStore.getLayer(this.activeProcessId)?.level;
+      if (!currentLevel) {
+        return ProcessLevel.Process;
       }
-      return currentLayer === ProcessLevel.Task;
+      return currentLevel;
+    },
+    rpaFlows(): RpaFlow[] {
+      return this.rpaFlowStore.rpaFlows;
     },
   },
   watch: {
@@ -130,4 +134,5 @@ import rpaFlowStore from "../store/rpaFlowStore";
 import defaultDiagram from "../resources/defaultDiagram";
 import { ProcessLevel } from "../interfaces/ProcessLayer";
 import { ProcessType } from "../interfaces/BaseProcess";
+import { RpaFlow } from "../interfaces/RpaFlow";
 </script>
