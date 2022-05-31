@@ -20,14 +20,18 @@
         variant="primary"
       >
         <o-tab-item value="0" label="Business Processes">
-          <ModelTree @change-level="$emit('change-level')" />
+          <BusinessProcessList
+            @change-layer="$emit('change-layer', $event)"
+          ></BusinessProcessList>
           <o-button rounded @click="$emit('new-process')" class="mt-4"
             >Add business process</o-button
           >
         </o-tab-item>
 
         <o-tab-item value="1" label="RPA Flows">
-          <RpaFlowList @change-flow="$emit('change-flow')"></RpaFlowList>
+          <RpaFlowList
+            @change-flow="$emit('change-flow', $event)"
+          ></RpaFlowList>
           <o-button rounded @click="$emit('new-flow')" class="mt-4"
             >Add RPA flow</o-button
           >
@@ -42,7 +46,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "navigation-sidebar",
-  emits: ["new-process", "change-level", "new-flow", "change-flow"],
+  emits: ["new-process", "change-layer", "new-flow", "change-flow"],
   data() {
     return {
       searchTerm: "",
@@ -54,11 +58,11 @@ export default defineComponent({
       this.searchTerm = "";
     },
   },
-  components: { ModelTree },
+  components: { BusinessProcessList, RpaFlowList },
 });
 </script>
 
 <script setup lang="ts">
-import ModelTree from "./NavigationSidebar/ModelTree.vue";
 import RpaFlowList from "./NavigationSidebar/RpaFlowList.vue";
+import BusinessProcessList from "./NavigationSidebar/BusinessProcessList.vue";
 </script>

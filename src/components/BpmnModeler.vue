@@ -62,7 +62,7 @@ export default defineComponent({
     saveDiagram: async function () {
       const diagramXML = await this.modeler.saveXML();
       processStore.updateActiveDiagram(diagramXML);
-      console.log(processStore.dump());
+      // console.log(processStore.dump());
     },
 
     setNewDiagramXML(): void {

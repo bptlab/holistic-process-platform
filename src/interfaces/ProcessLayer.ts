@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { BaseProcess } from "./BaseProcess";
 
 export enum ProcessLevel {
@@ -11,13 +12,11 @@ export interface ProcessLayer extends BaseProcess {
   level: ProcessLevel;
 }
 
-export const BASE_LAYER_ID = "Base";
-
-export function generateBaseProcessLayer(): ProcessLayer {
+export function generateNewBusinessProcess(): ProcessLayer {
   return {
-    id: BASE_LAYER_ID,
+    id: nanoid(8),
     parent: null,
-    name: "Processbase",
+    name: "New business process",
     level: ProcessLevel.Process,
   };
 }

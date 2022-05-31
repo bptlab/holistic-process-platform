@@ -5,16 +5,19 @@
   <hr />
   <div class="grid grid-cols-7 min-h-screen">
     <div class="col-span-1 shadow-lg p-2">
-      <NavigationSidebar @change-level="navigateLevel"></NavigationSidebar>
+      <NavigationSidebar
+        @change-layer="navigateLayer"
+        @new-process="addNewBusinessProcess"
+      ></NavigationSidebar>
     </div>
     <div class="col-span-6 p-2">
       <ModelBreadcrumb
         :levels="levels"
-        @change-level="navigateLevel"
+        @change-level="navigateLayer"
       ></ModelBreadcrumb>
 
       <hr />
-      <BpmnModeler @modeler-doubleclick="openSubLevel"></BpmnModeler>
+      <BpmnModeler @modeler-doubleclick="openSubLayer"></BpmnModeler>
       <hr />
       <ModelData></ModelData>
     </div>
@@ -31,40 +34,41 @@ export default defineComponent({
     };
   },
   mounted() {
-    processStore.initialize(exampleProcessLandscape);
+    // processStore.initialize(exampleProcessLandscape);
+    processStore.initialize();
   },
   methods: {
-    openSubLevel(e: ModelerEvent): void {
+    openSubLayer(e: ModelerEvent): void {
       if (!(e.element.businessObject.$type === "bpmn:SubProcess")) {
         return;
       }
       const subprocessId = e.element.businessObject.id;
 
       if (!processStore.hasLayer(subprocessId)) {
+        const currentLayer = processStore.getActiveLayer();
+        if (!currentLayer) {
+          return;
+        }
         const newLayer: ProcessLayer = {
           id: subprocessId,
-          parent: processStore.getActiveLayer().id,
-          level: processStore.getActiveLayer().level + 1,
+          name: e.element.businessObject.name || "",
+          parent: currentLayer.id,
+          level: currentLayer.level + 1,
         };
-        if (e.element.businessObject.name) {
-          newLayer.name = e.element.businessObject.name;
-        }
+
         processStore.addLayer(newLayer);
         this.levels.push(subprocessId);
         console.log("open new subprocess with id " + subprocessId);
       }
-      this.navigateLevel(subprocessId);
+      this.navigateLayer(subprocessId);
     },
-    navigateLevel(level: string) {
-      this.currentLevel = level;
-      console.log(`Asked to change level to ${level}`);
-      processStore.setActiveLayer(level);
+    navigateLayer(layer: string) {
+      // this.currentLevel = level;
+      console.log(`Asked to change layer to ${layer}`);
+      processStore.setActiveLayer(layer);
     },
-    getVisibilityStyle(level: string): string {
-      if (level === this.currentLevel) {
-        return "display: block";
-      }
-      return "display: none";
+    addNewBusinessProcess() {
+      processStore.addBusinessProcess("Test");
     },
   },
 });

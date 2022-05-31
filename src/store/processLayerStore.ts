@@ -1,6 +1,7 @@
+import { nanoid } from "nanoid";
 import { reactive } from "vue";
 import {
-  generateBaseProcessLayer,
+  generateNewBusinessProcess,
   ProcessLayer,
 } from "../interfaces/ProcessLayer";
 
@@ -14,6 +15,12 @@ const store = {
     processLayers: [] as ProcessLayer[],
     activeLayer: "",
   }) as processLayerStoreState,
+
+  addBusinessProcess(name: string) {
+    const newBusinessProcess: ProcessLayer = generateNewBusinessProcess();
+    this.addLayer(newBusinessProcess);
+    this.setActiveLayer(newBusinessProcess.id);
+  },
 
   addLayer(newLayer: ProcessLayer): void {
     if (this.hasLayer(newLayer.id)) {
@@ -41,6 +48,27 @@ const store = {
     return this.getLayer(this.state.activeLayer);
   },
 
+  getBusinessProcesses(): ProcessLayer[] {
+    return this.state.processLayers.filter((layer) => layer.parent === null)!;
+  },
+
+  getLayersOfBusinessProcess(businessProcessLayerId: string): ProcessLayer[] {
+    let intermediateLayerIds = [businessProcessLayerId];
+    let processLayers: ProcessLayer[] = [];
+
+    while (intermediateLayerIds.length > 0) {
+      const intermediateLayerId = intermediateLayerIds.pop();
+      const sublayersOfIntermediateLayerId = this.state.processLayers.filter(
+        (layer) => layer.parent === intermediateLayerId
+      );
+      processLayers = processLayers.concat(sublayersOfIntermediateLayerId);
+      intermediateLayerIds = intermediateLayerIds.concat(
+        sublayersOfIntermediateLayerId.map((sublayer) => sublayer.id)
+      );
+    }
+    return processLayers;
+  },
+
   updateActiveDiagram(diagramXML: string): void {
     const activeLayer = this.getActiveLayer();
     if (!activeLayer) {
@@ -62,9 +90,7 @@ const store = {
     if (dump) {
       this.load(dump);
     } else {
-      const baseLayer = generateBaseProcessLayer();
-      this.addLayer(baseLayer);
-      this.setActiveLayer(baseLayer.id);
+      this.addBusinessProcess("Initial Business Process");
     }
   },
 
