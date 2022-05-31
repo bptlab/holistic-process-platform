@@ -16,8 +16,11 @@ const store = {
     activeLayer: "",
   }) as processLayerStoreState,
 
-  addBusinessProcess(name: string) {
+  addBusinessProcess(name?: string) {
     const newBusinessProcess: ProcessLayer = generateNewBusinessProcess();
+    if (name) {
+      newBusinessProcess.name = name;
+    }
     this.addLayer(newBusinessProcess);
     this.setActiveLayer(newBusinessProcess.id);
   },

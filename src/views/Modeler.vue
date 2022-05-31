@@ -8,6 +8,7 @@
       <NavigationSidebar
         @change-layer="navigateLayer"
         @new-process="addNewBusinessProcess"
+        @new-flow="addNewRpaFlow"
       ></NavigationSidebar>
     </div>
     <div class="col-span-6 p-2">
@@ -30,6 +31,7 @@ export default defineComponent({
   data() {
     return {
       processLayerStore: processStore.state,
+      rpaFlowStore: rpaFlowStore.state,
       levels: ["Base"],
     };
   },
@@ -68,7 +70,10 @@ export default defineComponent({
       processStore.setActiveLayer(layer);
     },
     addNewBusinessProcess() {
-      processStore.addBusinessProcess("Test");
+      processStore.addBusinessProcess();
+    },
+    addNewRpaFlow() {
+      rpaFlowStore.addNewFlow();
     },
   },
 });
@@ -91,5 +96,6 @@ import {
   ProcessLayer,
 } from "../interfaces/ProcessLayer";
 import processStore from "../store/processLayerStore";
+import rpaFlowStore from "../store/rpaFlowStore";
 import NavigationSidebar from "../components/NavigationSidebar.vue";
 </script>

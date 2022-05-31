@@ -1,5 +1,5 @@
 import { reactive } from "vue";
-import { RpaFlow } from "../interfaces/RpaFlow";
+import { generateNewRpaFlow, RpaFlow } from "../interfaces/RpaFlow";
 
 export interface rpaFlowStoreState {
   rpaFlows: RpaFlow[];
@@ -9,6 +9,14 @@ const store = {
   state: reactive({
     rpaFlows: [] as RpaFlow[],
   }) as rpaFlowStoreState,
+
+  addNewFlow(name?: string) {
+    const newRpaFlow: RpaFlow = generateNewRpaFlow();
+    if (name) {
+      newRpaFlow.name = name;
+    }
+    this.addFlow(newRpaFlow);
+  },
 
   addFlow(newFlow: RpaFlow): void {
     if (this.hasFlow(newFlow.id)) {
