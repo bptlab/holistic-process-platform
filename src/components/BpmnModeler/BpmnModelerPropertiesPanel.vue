@@ -56,8 +56,6 @@
         </o-select>
       </o-field>
     </div>
-    <hr />
-    <button @click="printCurrent">Print!</button>
   </div>
   <div v-else>Please select an element in the modeler.</div>
 </template>

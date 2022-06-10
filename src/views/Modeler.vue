@@ -13,19 +13,22 @@
       ></NavigationSidebar>
     </div>
     <div class="col-span-6 p-2">
-      <ModelBreadcrumb
+      <!-- <ModelBreadcrumb
         :levels="levels"
         @change-level="navigateLayer"
       ></ModelBreadcrumb>
 
-      <hr />
+      <hr /> -->
       <BpmnModeler
         :processType="processType"
         :activeProcessId="activeProcessId"
         @modeler-doubleclick="openSubLayer"
       ></BpmnModeler>
       <hr />
-      <!-- <ModelData></ModelData> -->
+      <ModelData
+        :processType="processType"
+        :activeProcessId="activeProcessId"
+      ></ModelData>
     </div>
   </div>
 </template>

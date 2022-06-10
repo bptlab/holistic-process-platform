@@ -41,6 +41,14 @@ const store = {
     flow.diagram = diagramXML;
   },
 
+  updateFlowName(flowId: string, name: string): void {
+    const flow = this.getFlow(flowId);
+    if (!flow) {
+      return;
+    }
+    flow.name = name;
+  },
+
   initialize(dump?: rpaFlowStoreState): void {
     this.clearStore();
     if (dump) {
