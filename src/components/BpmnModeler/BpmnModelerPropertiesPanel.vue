@@ -24,20 +24,14 @@
       v-if="element.businessObject.$type === 'bpmn:Task' && processLevel === 3"
     >
       <o-field label="Library">
-        <o-select
-          placeholder="Select a library"
-          @input="updateProperty($event, 'library')"
-        >
+        <o-select placeholder="Select a library" v-model="currentLibrary">
           <option value="Excel">Excel</option>
           <option value="Word">Word</option>
           <option value="FireFox">FireFox</option>
         </o-select>
       </o-field>
       <o-field label="Keyword">
-        <o-select
-          placeholder="Select a keyword"
-          @input="updateProperty($event, 'keyword')"
-        >
+        <o-select placeholder="Select a keyword" v-model="currentKeyword">
           <option value="Open File">Open File</option>
           <option value="Write Cell">Write Cell</option>
           <option value="Get Cell">Get Cell</option>
@@ -73,7 +67,6 @@
 
 <script lang="ts">
 import { defineComponent, markRaw, PropType, toRaw } from "vue";
-import { ProcessLevel } from "../../interfaces/ProcessLayer";
 import { RpaFlow } from "../../interfaces/RpaFlow";
 import { ModelerElement } from "../interfaces/ModelerEvents";
 export default defineComponent({
@@ -96,6 +89,12 @@ export default defineComponent({
       required: true,
     },
   },
+  data() {
+    return {
+      currentLibrary: "" as string | undefined,
+      currentKeyword: "" as string | undefined,
+    };
+  },
   methods: {
     updateLabel(event: Event): void {
       if (!event.currentTarget) {
@@ -104,23 +103,52 @@ export default defineComponent({
       const modeling = this.modeler.get("modeling");
       modeling.updateLabel(toRaw(this.element), event.currentTarget.value);
     },
-    updateProperty(event: Event, property: string): void {
-      if (!event.currentTarget) {
-        return;
-      }
+    updateProperty(property: string, value: string): void {
       const modeling = this.modeler.get("modeling");
       const propertyKey = "rpa:" + property;
       const newProperty = {};
-      newProperty[propertyKey] = event.currentTarget.value;
+      newProperty[propertyKey] = value;
 
       modeling.updateProperties(toRaw(this.element), newProperty);
     },
     printCurrent(): void {
       console.log(this.element?.businessObject);
     },
+    getCurrentBusinessObject() {
+      if (!this.element || !this.element.id) {
+        return;
+      }
+      const elementRegistry = this.modeler.get("elementRegistry");
+      return elementRegistry.get(this.element.id).businessObject;
+    },
+    getRPALibrary(): string | undefined {
+      const elementBO = this.getCurrentBusinessObject();
+      if (elementBO && "rpa:library" in elementBO.$attrs) {
+        return elementBO.$attrs["rpa:library"];
+      }
+    },
+    getRPAKeyword(): string | undefined {
+      const elementBO = this.getCurrentBusinessObject();
+      if (elementBO && "rpa:keyword" in elementBO.$attrs) {
+        return elementBO.$attrs["rpa:keyword"];
+      }
+    },
   },
-  computed: {
-    selectedLibrary(): string {},
+  watch: {
+    element() {
+      this.currentLibrary = this.getRPALibrary();
+      this.currentKeyword = this.getRPAKeyword();
+    },
+    currentLibrary() {
+      if (this.element && this.currentLibrary) {
+        this.updateProperty("library", this.currentLibrary);
+      }
+    },
+    currentKeyword() {
+      if (this.element && this.currentKeyword) {
+        this.updateProperty("keyword", this.currentKeyword);
+      }
+    },
   },
 });
 </script>
