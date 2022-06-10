@@ -1,6 +1,6 @@
 <template>
   <div class="bg-sky-700 text-center text-slate-200 py-12">
-    <h1 class="text-4xl font-bold">RPA Bot Modeler</h1>
+    <h1 class="text-4xl font-bold">{{ headerText }}</h1>
   </div>
   <hr />
   <div class="grid grid-cols-6 min-h-screen">
@@ -103,6 +103,15 @@ export default defineComponent({
       // console.log(`Asked to change to RPA flow ${flowId}`);
       this.processType = ProcessType.RPA;
       this.activeProcessId = flowId;
+    },
+  },
+  computed: {
+    headerText() {
+      if (this.processType === ProcessType.Business) {
+        return "Business Process Modeler";
+      } else {
+        return "RPA Bot Modeler";
+      }
     },
   },
 });
