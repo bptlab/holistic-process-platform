@@ -23,7 +23,7 @@
           <BusinessProcessList
             @change-layer="$emit('change-layer', $event)"
           ></BusinessProcessList>
-          <o-button rounded @click="$emit('new-process')" class="mt-4"
+          <o-button rounded @click="$emit('new-process')" class="mt-8"
             >Add business process</o-button
           >
         </o-tab-item>
@@ -32,7 +32,7 @@
           <RpaFlowList
             @change-flow="$emit('change-flow', $event)"
           ></RpaFlowList>
-          <o-button rounded @click="$emit('new-flow')" class="mt-4"
+          <o-button rounded @click="$emit('new-flow')" class="mt-8"
             >Add RPA flow</o-button
           >
         </o-tab-item>

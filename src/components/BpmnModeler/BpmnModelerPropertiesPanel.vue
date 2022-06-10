@@ -1,92 +1,97 @@
 <template>
-  <div v-if="element && element.businessObject">
-    <div class="text-center">
-      {{ element.businessObject.$type }}
-    </div>
-    <hr />
-    <o-field label="Name">
-      <o-input
-        type="text"
-        v-model="element.businessObject.name"
-        placeholder="Label"
-        @input="updateLabel"
-      />
-    </o-field>
-    <o-field label="ID">
-      <o-input
-        type="text"
-        :placeholder="element.businessObject.id"
-        disabled
-      ></o-input>
-    </o-field>
-    <hr />
-    <div
-      v-if="element.businessObject.$type === 'bpmn:Task' && processLevel === 3"
-    >
-      <o-field label="Library">
-        <o-select placeholder="Select a library" v-model="currentLibrary">
-          <option
-            v-for="library in getAvailableRPALibraries()"
-            :value="library"
-          >
-            {{ library }}
-          </option>
-        </o-select>
-      </o-field>
-      <o-field label="Keyword">
-        <o-select placeholder="Select a keyword" v-model="currentKeyword">
-          <option
-            v-for="keyword in getAvailableRPAKeywordsForCurrentLibrary()"
-            :value="keyword"
-          >
-            {{ keyword }}
-          </option>
-        </o-select>
-      </o-field>
-      <o-field
-        v-for="config in getConfigForCurrentKeyword()"
-        :label="config.name"
-      >
-        <o-switch v-if="config.type === 'Boolean'">{{
-          config.infoText
-        }}</o-switch>
+  <div class="m-4">
+    <div v-if="element && element.businessObject">
+      <div class="text-center">
+        {{ element.businessObject.$type }}
+      </div>
+      <hr />
+      <o-field label="Name">
         <o-input
-          v-else-if="config.type === 'String'"
           type="text"
-          :placeholder="config.infoText"
-        ></o-input>
+          v-model="element.businessObject.name"
+          placeholder="Label"
+          @input="updateLabel"
+        />
+      </o-field>
+      <o-field label="ID">
         <o-input
-          v-else-if="config.type === 'Integer'"
-          type="number"
-          :placeholder="config.infoText"
+          type="text"
+          :placeholder="element.businessObject.id"
+          disabled
         ></o-input>
       </o-field>
-    </div>
-    <div
-      v-if="
-        element.businessObject.$type === 'bpmn:CallActivity' &&
-        processLevel === 2
-      "
-    >
-      <div v-if="rpaFlows.length > 0">
-        <o-field label="RPA Flow Reference">
-          <o-select
-            placeholder="Select an RPA Flow"
-            @input="updateProperty($event, 'flow-link')"
-          >
-            <option v-for="flow in rpaFlows" :value="flow.id">
-              {{ flow.name }}
+      <hr />
+      <div
+        v-if="
+          element.businessObject.$type === 'bpmn:Task' && processLevel === 3
+        "
+      >
+        <o-field label="Library">
+          <o-select placeholder="Select a library" v-model="currentLibrary">
+            <option
+              v-for="library in getAvailableRPALibraries()"
+              :value="library"
+            >
+              {{ library }}
             </option>
           </o-select>
         </o-field>
+        <o-field label="Keyword">
+          <o-select placeholder="Select a keyword" v-model="currentKeyword">
+            <option
+              v-for="keyword in getAvailableRPAKeywordsForCurrentLibrary()"
+              :value="keyword"
+            >
+              {{ keyword }}
+            </option>
+          </o-select>
+        </o-field>
+        <o-field
+          v-for="config in getConfigForCurrentKeyword()"
+          :label="config.name"
+        >
+          <o-switch v-if="config.type === 'Boolean'">{{
+            config.infoText
+          }}</o-switch>
+          <o-input
+            v-else-if="config.type === 'String'"
+            type="text"
+            :placeholder="config.infoText"
+          ></o-input>
+          <o-input
+            v-else-if="config.type === 'Integer'"
+            type="number"
+            :placeholder="config.infoText"
+          ></o-input>
+        </o-field>
       </div>
-      <div v-else>
-        There are no RPA Flows to reference in the repository. Please add an RPA
-        flow first.
+      <div
+        v-if="
+          element.businessObject.$type === 'bpmn:CallActivity' &&
+          processLevel === 2
+        "
+      >
+        <div v-if="rpaFlows.length > 0">
+          <o-field label="RPA Flow Reference">
+            <o-select
+              placeholder="Select an RPA Flow"
+              @input="updateProperty($event, 'flow-link')"
+              v-model="currentFlowLink"
+            >
+              <option v-for="flow in rpaFlows" :value="flow.id">
+                {{ flow.name }}
+              </option>
+            </o-select>
+          </o-field>
+        </div>
+        <div v-else>
+          There are no RPA Flows to reference in the repository. Please add an
+          RPA flow first.
+        </div>
       </div>
     </div>
+    <div v-else>Please select an element in the modeler.</div>
   </div>
-  <div v-else>Please select an element in the modeler.</div>
 </template>
 
 <script lang="ts">
@@ -118,11 +123,8 @@ export default defineComponent({
     return {
       currentLibrary: "" as string | undefined,
       currentKeyword: "" as string | undefined,
+      currentFlowLink: "" as string | undefined,
     };
-  },
-  mounted() {
-    console.log(rfCommands);
-    console.log(this.getAvailableRPALibraries());
   },
   methods: {
     updateLabel(event: Event): void {
@@ -149,6 +151,12 @@ export default defineComponent({
       }
       const elementRegistry = this.modeler.get("elementRegistry");
       return elementRegistry.get(this.element.id).businessObject;
+    },
+    getRPAFlowLink(): string | undefined {
+      const elementBO = this.getCurrentBusinessObject();
+      if (elementBO && "rpa:flow-link" in elementBO.$attrs) {
+        return elementBO.$attrs["rpa:flow-link"];
+      }
     },
     getRPALibrary(): string | undefined {
       const elementBO = this.getCurrentBusinessObject();
@@ -182,6 +190,7 @@ export default defineComponent({
     element() {
       this.currentLibrary = this.getRPALibrary();
       this.currentKeyword = this.getRPAKeyword();
+      this.currentFlowLink = this.getRPAFlowLink();
     },
     currentLibrary() {
       if (this.element && this.currentLibrary) {
@@ -191,6 +200,11 @@ export default defineComponent({
     currentKeyword() {
       if (this.element && this.currentKeyword) {
         this.updateProperty("keyword", this.currentKeyword);
+      }
+    },
+    currentFlowLink() {
+      if (this.element && this.currentFlowLink) {
+        this.updateProperty("flow-link", this.currentFlowLink);
       }
     },
   },

@@ -3,7 +3,7 @@
     <h1 class="text-4xl font-bold">RPA Bot Modeler</h1>
   </div>
   <hr />
-  <div class="grid grid-cols-7 min-h-screen">
+  <div class="grid grid-cols-6 min-h-screen">
     <div class="col-span-1 shadow-lg p-2">
       <NavigationSidebar
         @change-layer="navigateLayer"
@@ -12,7 +12,7 @@
         @new-flow="addNewRpaFlow"
       ></NavigationSidebar>
     </div>
-    <div class="col-span-6">
+    <div class="col-span-5">
       <BpmnModeler
         :processType="processType"
         :activeProcessId="activeProcessId"
@@ -42,6 +42,15 @@ export default defineComponent({
   },
   methods: {
     openSubLayer(e: ModelerEvent): void {
+      if (e.element.businessObject.$type === "bpmn:CallActivity") {
+        const BO = e.element.businessObject;
+        if ("rpa:flow-link" in BO.$attrs) {
+          const flowId = BO.$attrs["rpa:flow-link"];
+          this.processType = ProcessType.RPA;
+          this.activeProcessId = flowId;
+          return;
+        }
+      }
       if (!(e.element.businessObject.$type === "bpmn:SubProcess")) {
         return;
       }
