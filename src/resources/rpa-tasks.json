@@ -1,0 +1,501 @@
+[
+  {
+    "_id": {
+      "$oid": "6061d5627dee5516b3824ade"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "visible",
+        "type": "Boolean",
+        "isRequired": false,
+        "infoText": "Show window after opening",
+        "index": 0
+      },
+      {
+        "name": "display_alerts",
+        "type": "Boolean",
+        "isRequired": false,
+        "infoText": "Show alert popups",
+        "index": 1
+      }
+    ],
+    "application": "Excel.Application",
+    "task": "Open Application",
+    "code": "Open Application"
+  },
+  {
+    "_id": {
+      "$oid": "6061d6ee7dee5516b3824adf"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "filename",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "Path to filename",
+        "index": 0
+      }
+    ],
+    "application": "Excel.Application",
+    "task": "Open Workbook",
+    "code": "Open Workbook"
+  },
+  {
+    "_id": {
+      "$oid": "6061d7667dee5516b3824ae0"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "save_changes",
+        "type": "Boolean",
+        "isRequired": true,
+        "infoText": "Save changes bevor quitting Excel.",
+        "index": 0
+      }
+    ],
+    "application": "Excel.Application",
+    "task": "Quit Application",
+    "code": "Quit Application"
+  },
+  {
+    "_id": {
+      "$oid": "6061e3db7dee5516b3824ae1"
+    },
+    "outputValue": false,
+    "application": "Excel.Application",
+    "task": "Save Excel",
+    "code": "Save Excel"
+  },
+  {
+    "_id": {
+      "$oid": "6061e44f7dee5516b3824ae2"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "worksheet",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "Worksheet to handle, defaults to active worksheet if None",
+        "index": 0
+      },
+      {
+        "name": "row",
+        "type": "Integer",
+        "isRequired": true,
+        "infoText": "Target row, defaults to None",
+        "index": 1
+      },
+      {
+        "name": "column",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "Target column, defaults to None",
+        "index": 2
+      },
+      {
+        "name": "value",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "Possible value to set, defaults to None",
+        "index": 3
+      },
+      {
+        "name": "number_format",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "Possible number format to set, defaults to None",
+        "index": 4
+      },
+      {
+        "name": "formula",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "Possible formula to set, defaults to None",
+        "index": 5
+      }
+    ],
+    "application": "Excel.Application",
+    "task": "Write To Cells",
+    "code": "Write To Cells"
+  },
+  {
+    "_id": {
+      "$oid": "6062e52f241bffc33838f279"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "alias",
+        "type": "String",
+        "isRequired": true,
+        "infoText": " That will be used to identify the Session object in the cache",
+        "index": 0
+      },
+      {
+        "name": "uri",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "To send the GET request to",
+        "index": 1
+      },
+      {
+        "name": "headers",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "A dictionary of headers to use with the request",
+        "index": 2
+      },
+      {
+        "name": "data",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "Possible value to set, defaults to None",
+        "index": 3
+      },
+      {
+        "name": "number_format",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "A dictionary of key-value pairs that will be urlencoded and sent as GET data or binary data that is sent as the raw body content",
+        "index": 4
+      },
+      {
+        "name": "json",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "A value that will be json encoded and sent as GET data if data is not specified",
+        "index": 5
+      },
+      {
+        "name": "params",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "Url parameters to append to the uri",
+        "index": 6
+      },
+      {
+        "name": "allow_redirects",
+        "type": "Boolean",
+        "isRequired": true,
+        "infoText": "Set to True if POST/PUT/DELETE redirect following is allowed.",
+        "index": 7
+      },
+      {
+        "name": "timeout",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "Connection timeout",
+        "index": 8
+      }
+    ],
+    "application": "HTTP",
+    "task": "Get Request",
+    "code": "Get Request"
+  },
+  {
+    "_id": {
+      "$oid": "6063385ffb3f8f83c94793d7"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "path",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "Open an existing Excel workbook.",
+        "index": "0"
+      }
+    ],
+    "application": "Excel.Files",
+    "task": "Open Workbook",
+    "code": "Open Workbook"
+  },
+  {
+    "_id": {
+      "$oid": "606339aafb3f8f83c94793d9"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "row",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "Index of row to write, e.g. 3",
+        "index": "0"
+      },
+      {
+        "name": "column",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "Name or index of column, e.g. C or 7",
+        "index": "1"
+      },
+      {
+        "name": "value",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "New value of cell",
+        "index": "2"
+      },
+      {
+        "name": "name",
+        "type": "String",
+        "isRequired": false,
+        "infotext": "Name of worksheet",
+        "index": "3"
+      }
+    ],
+    "application": "Excel.Files",
+    "task": "Set Worksheet Value",
+    "code": "Set Worksheet Value"
+  },
+  {
+    "_id": {
+      "$oid": "60633b56fb3f8f83c94793da"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "path",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "Path to save to. If not given, uses path given when opened or created.",
+        "index": "0"
+      }
+    ],
+    "application": "Excel.Files",
+    "task": "Save Workbook",
+    "code": "Save Workbook"
+  },
+  {
+    "_id": {
+      "$oid": "60881dd15e89bb4478470967"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "path",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "path that will be resolved",
+        "index": 0
+      }
+    ],
+    "application": "FileSystem",
+    "task": "Absolute Path",
+    "code": "Absolute Path"
+  },
+  {
+    "_id": {
+      "$oid": "60910169fbd81a6d16c24f5c"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "visible",
+        "type": "Boolean",
+        "isRequired": false,
+        "infoText": "Show window after opening",
+        "index": 0
+      },
+      {
+        "name": "display_alerts",
+        "type": "Boolean",
+        "isRequired": false,
+        "infoText": "Show alert popups",
+        "index": 1
+      }
+    ],
+    "application": "Word.Application",
+    "task": "Open Application",
+    "code": "Open Application"
+  },
+  {
+    "_id": {
+      "$oid": "60b1194ff949280f2451b0e4"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "row",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "Index of row to write",
+        "index": "0"
+      },
+      {
+        "name": "column",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "Name or index of column",
+        "index": "1"
+      },
+      {
+        "name": "image",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "Path to image file",
+        "index": "2"
+      },
+      {
+        "name": "scale",
+        "type": "Integer",
+        "isRequired": false,
+        "infoText": "Scale of image",
+        "index": "3"
+      },
+      {
+        "name": "name",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "Name of worksheet",
+        "index": "4"
+      }
+    ],
+    "application": "Excel.Files",
+    "task": "Insert Image To Worksheet",
+    "code": "Insert Image To Worksheet"
+  },
+  {
+    "_id": {
+      "$oid": "60b11b192c60d3f8007862a7"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "url",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "No description available",
+        "index": 0
+      },
+      {
+        "name": "use_profile",
+        "type": "Boolean",
+        "isRequired": false,
+        "infoText": "No description available",
+        "index": 1
+      },
+      {
+        "name": "headless",
+        "type": "Boolean",
+        "isRequired": false,
+        "infoText": "No description available",
+        "index": "2"
+      },
+      {
+        "name": "maximized",
+        "type": "Boolean",
+        "isRequired": false,
+        "infoText": "No description available",
+        "index": "3"
+      },
+      {
+        "name": "alias",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "No description available",
+        "index": "4"
+      },
+      {
+        "name": "profile_name",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "No description available",
+        "index": "5"
+      },
+      {
+        "name": "profile_path",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "No description available",
+        "index": "6"
+      },
+      {
+        "name": "preferences",
+        "type": "Dictionary",
+        "isRequired": false,
+        "infoText": "No description available",
+        "index": "7"
+      },
+      {
+        "name": "proxy",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "No description available",
+        "index": "8"
+      },
+      {
+        "name": "user_agent",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "No description available",
+        "index": "9"
+      }
+    ],
+    "application": "Browser.Selenium",
+    "task": "Open Chrome Browser",
+    "code": "Open Chrome Browser"
+  },
+  {
+    "_id": {
+      "$oid": "60b11e542c60d3f8007862a8"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "locator",
+        "type": "String",
+        "isRequired": true,
+        "infoText": "Waits until the element locator is visible.",
+        "index": 0
+      },
+      {
+        "name": "timeout",
+        "type": "Timedelta",
+        "isRequired": false,
+        "infoText": "Fails if timeout expires before the element is visible. See the Timeouts section for more information about using timeouts and their default value and the Locating elements section for details about the locator syntax.",
+        "index": 1
+      },
+      {
+        "name": "error",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "error can be used to override the default error message.",
+        "index": "2"
+      }
+    ],
+    "application": "Browser.Selenium",
+    "task": "Wait Until Element Is Visible",
+    "code": "Wait Until Element Is Visible"
+  },
+  {
+    "_id": {
+      "$oid": "60b11f272c60d3f8007862a9"
+    },
+    "outputValue": false,
+    "inputVars": [
+      {
+        "name": "locator",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "locator if defined, take element screenshot, if not takes page screenshot",
+        "index": 0
+      },
+      {
+        "name": "filename",
+        "type": "String",
+        "isRequired": false,
+        "infoText": "filename filename for the screenshot, by default creates file screenshot-timestamp-element/page.png if set to None then file is not saved at all",
+        "index": 1
+      }
+    ],
+    "application": "Browser.Selenium",
+    "task": "Screenshot",
+    "code": "Screenshot"
+  }
+]

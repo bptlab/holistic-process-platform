@@ -25,17 +25,41 @@
     >
       <o-field label="Library">
         <o-select placeholder="Select a library" v-model="currentLibrary">
-          <option value="Excel">Excel</option>
-          <option value="Word">Word</option>
-          <option value="FireFox">FireFox</option>
+          <option
+            v-for="library in getAvailableRPALibraries()"
+            :value="library"
+          >
+            {{ library }}
+          </option>
         </o-select>
       </o-field>
       <o-field label="Keyword">
         <o-select placeholder="Select a keyword" v-model="currentKeyword">
-          <option value="Open File">Open File</option>
-          <option value="Write Cell">Write Cell</option>
-          <option value="Get Cell">Get Cell</option>
+          <option
+            v-for="keyword in getAvailableRPAKeywordsForCurrentLibrary()"
+            :value="keyword"
+          >
+            {{ keyword }}
+          </option>
         </o-select>
+      </o-field>
+      <o-field
+        v-for="config in getConfigForCurrentKeyword()"
+        :label="config.name"
+      >
+        <o-switch v-if="config.type === 'Boolean'">{{
+          config.infoText
+        }}</o-switch>
+        <o-input
+          v-else-if="config.type === 'String'"
+          type="text"
+          :placeholder="config.infoText"
+        ></o-input>
+        <o-input
+          v-else-if="config.type === 'Integer'"
+          type="number"
+          :placeholder="config.infoText"
+        ></o-input>
       </o-field>
     </div>
     <div
@@ -69,6 +93,7 @@
 import { defineComponent, markRaw, PropType, toRaw } from "vue";
 import { RpaFlow } from "../../interfaces/RpaFlow";
 import { ModelerElement } from "../interfaces/ModelerEvents";
+import rfCommands from "../../utils/rfKeywordParser";
 export default defineComponent({
   name: "bpmn-modeler-properties-panel",
   props: {
@@ -94,6 +119,10 @@ export default defineComponent({
       currentLibrary: "" as string | undefined,
       currentKeyword: "" as string | undefined,
     };
+  },
+  mounted() {
+    console.log(rfCommands);
+    console.log(this.getAvailableRPALibraries());
   },
   methods: {
     updateLabel(event: Event): void {
@@ -132,6 +161,21 @@ export default defineComponent({
       if (elementBO && "rpa:keyword" in elementBO.$attrs) {
         return elementBO.$attrs["rpa:keyword"];
       }
+    },
+    getAvailableRPALibraries(): string[] {
+      return Object.keys(rfCommands);
+    },
+    getAvailableRPAKeywordsForCurrentLibrary(): string[] {
+      if (!this.currentLibrary) {
+        return [];
+      }
+      return Object.keys(rfCommands[this.currentLibrary]);
+    },
+    getConfigForCurrentKeyword(): object[] {
+      if (!this.currentLibrary || !this.currentKeyword) {
+        return [];
+      }
+      return rfCommands[this.currentLibrary][this.currentKeyword];
     },
   },
   watch: {
