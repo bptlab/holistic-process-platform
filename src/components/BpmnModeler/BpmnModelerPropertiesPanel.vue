@@ -1,18 +1,25 @@
 <template>
   <div v-if="element && element.businessObject">
-    <div>
+    <div class="text-center">
       {{ element.businessObject.$type }}
     </div>
     <hr />
-    <div>Name: {{ element.businessObject.name || "" }}</div>
-    <div>ID: {{ element.businessObject.id }}</div>
+    <o-field label="Name">
+      <o-input
+        type="text"
+        v-model="element.businessObject.name"
+        placeholder="Label"
+        @input="updateLabel"
+      />
+    </o-field>
+    <o-field label="ID">
+      <o-input
+        type="text"
+        :placeholder="element.businessObject.id"
+        disabled
+      ></o-input>
+    </o-field>
     <hr />
-    <input
-      type="text"
-      :value="element.businessObject.name"
-      placeholder="Label"
-      @input="updateLabel"
-    />
     <div
       v-if="element.businessObject.$type === 'bpmn:Task' && processLevel === 3"
     >
@@ -43,18 +50,22 @@
         processLevel === 2
       "
     >
-      You can insert a reference to one of {{ rpaFlows.length }} flows in the
-      RFR.
-      <o-field label="RPA Flow Reference">
-        <o-select
-          placeholder="Select an RPA Flow"
-          @input="updateProperty($event, 'flow-link')"
-        >
-          <option v-for="flow in rpaFlows" :value="flow.id">
-            {{ flow.name }}
-          </option>
-        </o-select>
-      </o-field>
+      <div v-if="rpaFlows.length > 0">
+        <o-field label="RPA Flow Reference">
+          <o-select
+            placeholder="Select an RPA Flow"
+            @input="updateProperty($event, 'flow-link')"
+          >
+            <option v-for="flow in rpaFlows" :value="flow.id">
+              {{ flow.name }}
+            </option>
+          </o-select>
+        </o-field>
+      </div>
+      <div v-else>
+        There are no RPA Flows to reference in the repository. Please add an RPA
+        flow first.
+      </div>
     </div>
   </div>
   <div v-else>Please select an element in the modeler.</div>

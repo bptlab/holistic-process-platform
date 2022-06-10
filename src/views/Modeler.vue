@@ -59,7 +59,17 @@ export default defineComponent({
 
       if (!processStore.hasLayer(subprocessId)) {
         const currentLayer = processStore.getLayer(this.activeProcessId);
+
         if (!currentLayer) {
+          return;
+        }
+        if (currentLayer.level === ProcessLevel.Task) {
+          this.$oruga.notification.open({
+            message: "You already are at task level!",
+            variant: "danger",
+            position: "bottom",
+            duration: 2000,
+          });
           return;
         }
         const newLayer: ProcessLayer = {
@@ -73,6 +83,7 @@ export default defineComponent({
         this.levels.push(subprocessId);
         console.log("open new subprocess with id " + subprocessId);
       }
+
       this.navigateLayer(subprocessId);
     },
     navigateLayer(layer: string) {
@@ -107,7 +118,7 @@ import {
   ModelerEvent,
   ModelerSelectionChange,
 } from "../interfaces/ModelerEvents";
-import { ProcessLayer } from "../interfaces/ProcessLayer";
+import { ProcessLayer, ProcessLevel } from "../interfaces/ProcessLayer";
 import processStore from "../store/processLayerStore";
 import rpaFlowStore from "../store/rpaFlowStore";
 import NavigationSidebar from "../components/NavigationSidebar.vue";
