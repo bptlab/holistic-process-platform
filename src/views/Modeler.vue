@@ -46,8 +46,9 @@ export default defineComponent({
     };
   },
   mounted() {
-    // processStore.initialize(exampleProcessLandscape);
-    processStore.initialize();
+    processStore.initialize(exampleBPR);
+    rpaFlowStore.initialize(exampleRFR);
+
     this.activeProcessId = processStore.getBusinessProcesses()[0].id;
   },
   methods: {
@@ -81,7 +82,7 @@ export default defineComponent({
 
         processStore.addLayer(newLayer);
         this.levels.push(subprocessId);
-        console.log("open new subprocess with id " + subprocessId);
+        // console.log("open new subprocess with id " + subprocessId);
       }
 
       this.navigateLayer(subprocessId);
@@ -91,6 +92,8 @@ export default defineComponent({
       console.log(`Asked to change to business process layer ${layer}`);
       this.processType = ProcessType.Business;
       this.activeProcessId = layer;
+      console.log(processStore.dump());
+      console.log(rpaFlowStore.dump());
     },
     addNewBusinessProcess() {
       processStore.addBusinessProcess();
@@ -99,7 +102,7 @@ export default defineComponent({
       rpaFlowStore.addNewFlow();
     },
     navigateRpaFlow(flowId: string) {
-      console.log(`Asked to change to RPA flow ${flowId}`);
+      // console.log(`Asked to change to RPA flow ${flowId}`);
       this.processType = ProcessType.RPA;
       this.activeProcessId = flowId;
     },
@@ -112,7 +115,8 @@ import { defineComponent, PropType } from "vue";
 import BpmnModeler from "../components/BpmnModeler.vue";
 import ModelBreadcrumb from "../components/ModelBreadcrumb.vue";
 import ModelData from "../components/ModelData.vue";
-import exampleProcessLandscape from "../resources/exampleProcessLandscape.json";
+import exampleBPR from "../resources/exampleBPR.json";
+import exampleRFR from "../resources/exampleRFR.json";
 import {
   ModelerElement,
   ModelerEvent,
