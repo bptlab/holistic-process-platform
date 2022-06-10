@@ -1,14 +1,21 @@
 <template>
   <div class="grid grid-cols-5">
-    <BpmnModelerCanvas
-      :diagram="diagramXML"
-      :layer="activeProcessId"
-      @modeler-shown="modelerLoaded"
-      @modeler-selection-changed="selectionChanged"
-      @modeler-element-changed="elementChanged"
-      @modeler-doubleclick="$emit('modeler-doubleclick', $event)"
-      class="col-span-4 h-132"
-    ></BpmnModelerCanvas>
+    <div class="col-span-4">
+      <ModelData
+        :processType="processType"
+        :activeProcessId="activeProcessId"
+        class="mx-auto p-2"
+      ></ModelData>
+      <BpmnModelerCanvas
+        :diagram="diagramXML"
+        :layer="activeProcessId"
+        @modeler-shown="modelerLoaded"
+        @modeler-selection-changed="selectionChanged"
+        @modeler-element-changed="elementChanged"
+        @modeler-doubleclick="$emit('modeler-doubleclick', $event)"
+        class="col-span-4 h-132"
+      ></BpmnModelerCanvas>
+    </div>
     <BpmnModelerPropertiesPanel
       class="col-span-1"
       v-if="modelerShown"
@@ -123,6 +130,8 @@ export default defineComponent({
 <script setup lang="ts">
 import { defineComponent, PropType } from "vue";
 import BpmnModelerCanvas from "./BpmnModeler/BpmnModelerCanvas.vue";
+import ModelData from "../components/ModelData.vue";
+
 import BpmnModelerPropertiesPanel from "./BpmnModeler/BpmnModelerPropertiesPanel.vue";
 import {
   ModelerElement,

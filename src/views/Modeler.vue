@@ -12,23 +12,12 @@
         @new-flow="addNewRpaFlow"
       ></NavigationSidebar>
     </div>
-    <div class="col-span-6 p-2">
-      <!-- <ModelBreadcrumb
-        :levels="levels"
-        @change-level="navigateLayer"
-      ></ModelBreadcrumb>
-
-      <hr /> -->
+    <div class="col-span-6">
       <BpmnModeler
         :processType="processType"
         :activeProcessId="activeProcessId"
         @modeler-doubleclick="openSubLayer"
       ></BpmnModeler>
-      <hr />
-      <ModelData
-        :processType="processType"
-        :activeProcessId="activeProcessId"
-      ></ModelData>
     </div>
   </div>
 </template>
@@ -113,8 +102,6 @@ export default defineComponent({
 <script setup lang="ts">
 import { defineComponent, PropType } from "vue";
 import BpmnModeler from "../components/BpmnModeler.vue";
-import ModelBreadcrumb from "../components/ModelBreadcrumb.vue";
-import ModelData from "../components/ModelData.vue";
 import exampleBPR from "../resources/exampleBPR.json";
 import exampleRFR from "../resources/exampleRFR.json";
 import {

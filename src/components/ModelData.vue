@@ -1,8 +1,11 @@
 <template>
-  <div>
-    <o-field :label="inputLabel">
-      <o-input type="text" v-model="currentProcessName" @input="updateName" />
-    </o-field>
+  <div class="text-center">
+    <o-input
+      type="text"
+      v-model="currentProcessName"
+      @input="updateName"
+      inputClass="text-center bg-transparent text-xl border-0 border-b-2 shadow-none w-3/6"
+    />
   </div>
 </template>
 
