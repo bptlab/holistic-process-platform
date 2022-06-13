@@ -20,7 +20,7 @@ RPA workflows solely consist of tasks that represent atomic RPA operations, such
 
 ![RPA_RPA Flow Creation](https://user-images.githubusercontent.com/1167788/173344209-291e1778-347d-49f0-b348-2b0afe0980a8.gif)
 
-Each task and thus RPA operation can be directly configured in the modeler.
+Each task and thus RPA operation can be directly configured in the modeler (for the demonstration only a limited set of available RPA operations is used).
 
 <img src="https://user-images.githubusercontent.com/1167788/173344949-2feced85-1bb5-4443-b591-fe0f441c88a5.gif" width="700" />
 
@@ -35,3 +35,12 @@ While RPA excels at automatic repetitive tasks at a small scope, business proces
 Business processes can be explored by double-clicking non-atomic element, i.e., call activities that reference RPA flows and sub-processes, which will open the respective process definition.
 
 ![RPA_BP RPA Navigation](https://user-images.githubusercontent.com/1167788/173345638-f156301d-ab6a-41a7-980c-2d1a330a811e.gif)
+
+
+## Installation
+If you want to try the modeler yourself, you can easily install and run it:
+
+1. Clone the repository
+2. Run `npm install`
+3. Execute `npm run dev`
+4. Open "http://localhost:3000/modeler"
